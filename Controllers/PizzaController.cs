@@ -1,69 +1,123 @@
-using ContosoPizza.Models;
-using ContosoPizza.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ContosoPizza.Models;
 
-namespace ContosoPizza.Controllers;
-
-[ApiController]
-[Route(template: "[controller]")]
-public class PizzaController : ControllerBase
+namespace ContosoPizza.Controllers
 {
-    public PizzaController() { }
-
-    // GET all action
-    [HttpGet]
-    public ActionResult<List<Pizza>> GetAll() => PizzaService.GetAll();
-
-    // GET by Id action
-
-    [HttpGet(template: "{id}")]
-    // POST action
-    public ActionResult<Pizza> Get(int id)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PizzaController : ControllerBase
     {
-        var pizza = PizzaService.Get(id);
-        if (pizza is null)
-            return NotFound();
-        return pizza;
-    }
+        private readonly PizzaContext _context;
 
-    // POST action
+        public PizzaController(PizzaContext context)
+        {
+            _context = context;
+        }
 
-    [HttpPost]
-    public IActionResult Create(Pizza pizza)
-    {
-        PizzaService.Add(pizza);
-        return CreatedAtAction(nameof(Create), new { id = pizza.Id }, pizza);
-    }
+        // GET: api/Pizza
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Pizza>>> GetPizzas()
+        {
+          if (_context.Pizzas == null)
+          {
+              return NotFound();
+          }
+            return await _context.Pizzas.ToListAsync();
+        }
 
-    // PUT action
-    [HttpPut(template: "{id}")]
-    public IActionResult Update(int id, Pizza pizza)
-    {
-        // This code will update the pizza and return a result
-        if (id != pizza.Id)
-            return BadRequest();
+        // GET: api/Pizza/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Pizza>> GetPizza(int id)
+        {
+          if (_context.Pizzas == null)
+          {
+              return NotFound();
+          }
+            var pizza = await _context.Pizzas.FindAsync(id);
 
-        // get the pizza instance with given id
-        var existingPizza = PizzaService.Get(id);
-        if (existingPizza is null)
-            return NotFound();
+            if (pizza == null)
+            {
+                return NotFound();
+            }
 
-        PizzaService.Update(pizza);
+            return pizza;
+        }
 
-        return NoContent();
-    }
+        // PUT: api/Pizza/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutPizza(int id, Pizza pizza)
+        {
+            if (id != pizza.Id)
+            {
+                return BadRequest();
+            }
 
-    // DELETE action
-    [HttpDelete(template: "{id}")]
-    public IActionResult Delete(int id)
-    {
-        // This code will delete the pizza and return a result
-        var pizzaToDelete = PizzaService.Get(id);
-        if (pizzaToDelete is null)
-            return NotFound();
+            _context.Entry(pizza).State = EntityState.Modified;
 
-        PizzaService.Delete(id);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PizzaExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-        return NoContent();
+            return NoContent();
+        }
+
+        // POST: api/Pizza
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Pizza>> PostPizza(Pizza pizza)
+        {
+          if (_context.Pizzas == null)
+          {
+              return Problem("Entity set 'PizzaContext.Pizzas'  is null.");
+          }
+            _context.Pizzas.Add(pizza);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetPizza", new { id = pizza.Id }, pizza);
+        }
+
+        // DELETE: api/Pizza/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePizza(int id)
+        {
+            if (_context.Pizzas == null)
+            {
+                return NotFound();
+            }
+            var pizza = await _context.Pizzas.FindAsync(id);
+            if (pizza == null)
+            {
+                return NotFound();
+            }
+
+            _context.Pizzas.Remove(pizza);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool PizzaExists(int id)
+        {
+            return (_context.Pizzas?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
     }
 }
