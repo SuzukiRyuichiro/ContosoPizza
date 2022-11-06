@@ -22,7 +22,7 @@ public static class PizzaService
             new Pizza
             {
                 Id = 2,
-                Name = "Cheese",
+                Name = "Cheese and Tomato",
                 IsGlutenFree = true
             }
         };
