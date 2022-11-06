@@ -24,10 +24,10 @@ namespace ContosoPizza.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pizza>>> GetPizzas()
         {
-          if (_context.Pizzas == null)
-          {
-              return NotFound();
-          }
+            if (_context.Pizzas == null)
+            {
+                return NotFound();
+            }
             return await _context.Pizzas.ToListAsync();
         }
 
@@ -35,10 +35,10 @@ namespace ContosoPizza.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Pizza>> GetPizza(int id)
         {
-          if (_context.Pizzas == null)
-          {
-              return NotFound();
-          }
+            if (_context.Pizzas == null)
+            {
+                return NotFound();
+            }
             var pizza = await _context.Pizzas.FindAsync(id);
 
             if (pizza == null)
@@ -85,14 +85,27 @@ namespace ContosoPizza.Controllers
         [HttpPost]
         public async Task<ActionResult<Pizza>> PostPizza(Pizza pizza)
         {
-          if (_context.Pizzas == null)
-          {
-              return Problem("Entity set 'PizzaContext.Pizzas'  is null.");
-          }
+            if (_context.Pizzas == null)
+            {
+                return Problem("Entity set 'PizzaContext.Pizzas'  is null.");
+            }
             _context.Pizzas.Add(pizza);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPizza", new { id = pizza.Id }, pizza);
+            // return CreatedAtAction(actionName: "GetPizza", new { id = pizza.Id }, pizza); => old
+            // CreatedAtAction(actionName, routeValues, value)
+            // actionName
+            // String
+            // The name of the action to use for generating the URL.
+
+            // routeValues
+            // Object
+            // The route data to use for generating the URL.
+
+            // value
+            // Object
+            // The content value to format in the entity body.
+            return CreatedAtAction(nameof(GetPizza), new { id = pizza.Id }, pizza);
         }
 
         // DELETE: api/Pizza/5
