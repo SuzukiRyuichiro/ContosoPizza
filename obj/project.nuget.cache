@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "D1q+LzEJwFQ7aGEM3moseIRaA72+JPHKkAvqWe0qBUWlwBjnVBqKGJIxrCTCYqCPcUhw5xoBzB9BOxeEJqDaRw==",
+  "dgSpecHash": "QvPztC1u0rwFCIQmNTZEh4HnryOR17vYqmFxHNShiVotDlrsbJ6cIKxPKAsHLwfY2QNcsAKSflXXqWnnaeE7mw==",
   "success": true,
   "projectFilePath": "/Users/scooter/code/SuzukiRyuichiro/ContosoPizza/ContosoPizza.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "/Users/scooter/.nuget/packages/microsoft.entityframeworkcore/6.0.10/microsoft.entityframeworkcore.6.0.10.nupkg.sha512",
     "/Users/scooter/.nuget/packages/microsoft.entityframeworkcore.abstractions/6.0.10/microsoft.entityframeworkcore.abstractions.6.0.10.nupkg.sha512",
     "/Users/scooter/.nuget/packages/microsoft.entityframeworkcore.analyzers/6.0.10/microsoft.entityframeworkcore.analyzers.6.0.10.nupkg.sha512",
+    "/Users/scooter/.nuget/packages/microsoft.entityframeworkcore.inmemory/6.0.10/microsoft.entityframeworkcore.inmemory.6.0.10.nupkg.sha512",
     "/Users/scooter/.nuget/packages/microsoft.entityframeworkcore.relational/6.0.10/microsoft.entityframeworkcore.relational.6.0.10.nupkg.sha512",
     "/Users/scooter/.nuget/packages/microsoft.entityframeworkcore.sqlite/6.0.10/microsoft.entityframeworkcore.sqlite.6.0.10.nupkg.sha512",
     "/Users/scooter/.nuget/packages/microsoft.entityframeworkcore.sqlite.core/6.0.10/microsoft.entityframeworkcore.sqlite.core.6.0.10.nupkg.sha512",
